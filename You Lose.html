@@ -1,0 +1,28 @@
+<html>
+<head>
+<title> you lose! </title>
+<script src="https://simplycodingcourses.com/files/simply.js"></script>
+<script>
+function start(){
+sjs.open("target",1200,850);
+
+var win_txt = new sjs.Text("you lose!", 50, "red");
+win_txt.centerH();
+
+var play_txt = new sjs.Text("Play Again?", 30, "red");
+play_txt.center();
+
+var play_btn = new sjs.Button("Play Again?", function(){
+	window.location = "costom game.html"
+});
+play_btn.center().offset(0,30);
+
+} //end start
+</script>
+</head>
+<body onload="start()">
+<h1>  </h1>
+
+<div id="target" style="margin:auto;background:grey;"></div>
+</body>
+</html>

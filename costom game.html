@@ -1,0 +1,192 @@
+<html>
+<head>
+<title> urbin  </title>
+<script src="https://simplycodingcourses.com/files/simply.js"></script>
+<script>
+function start(){
+sjs.open("target",700,450);
+
+ var background = new sjs.Image("images/background1.png");
+     background.setSize(2700,450)
+
+     //player properties
+     var player = new sjs.Image("images/idle.png")
+     player.type = "player";
+     player.setSize(85,93);
+     player.setGravity(3);
+     player.bottom();
+     player.friction = .3;
+     player.noBounds = true;
+
+     sjs.scrollable(player,background);
+
+         var r_image = ["images/l walk 1.png", "images/l walk 2.png", "images/l walk 3.png", "images/l walk 4.png",];
+
+    var l_image = ["images/r walk 1.png", "images/r walk 2.png", "images/r walk 3.png", "images/r walk 4.png",];
+
+    var r_facing = true;
+    var r_track = 0;
+    var l_track = 0;
+
+    sjs.keyDown(RIGHT_KEY, function(){
+        r_facing = true;
+        r_track = r_track + 1;
+        player.pushRight(2);
+        player.setImage(r_image[r_track]);
+        if(r_track == 4){
+        	r_track = 0;
+        }
+        if(r_track >= 5){
+          player.setImage("images/jump 1.png");
+        } 
+});
+     sjs.keyDown(LEFT_KEY, function(){
+        r_facing = false;
+        l_track = l_track + 1;
+        player.pushLeft(2);
+        player.setImage(l_image[l_track]);
+        if(l_track == 4){
+          l_track = 0;
+        }
+        if(l_track >= 5){
+          player.setImage("images/jump 1.png");
+        } 
+    });
+
+     //jumping
+     var canJump = true;
+     sjs.keyDown(UP_KEY, function(){
+        if(canJump == true){
+            canJump = false;
+            player.pushUp(50);
+        }
+        if(r_facing == true){
+        player.setImage("images/jump 1.png");
+        r_track = 5;
+        if(r_facing == false){
+        player.setImage("images/jump 1.png");
+        l_track = 5;        	
+        }
+
+        }
+     });
+
+     window.addEventListener("keyup", function(e){
+        if(e.keyCode == RIGHT_KEY){
+            player.setImage("images/idle.png");
+            r_track = 0;
+        } else if (e.keyCode == LEFT_KEY){
+            player.setImage("images/idle.png");
+            l_track = 0;
+        }
+    });
+
+          sjs.onHit("player", "bottom_screen",function(x,y){
+        sjs.stoppedBy(x,y);
+        if(canJump == false){
+            canJump = true;
+            r_track = 0;
+            l_track = 0;
+        }
+     });
+     sjs.onHit("player",["right_screen","left_screen","top_screen"],function(x,y){
+       sjs.stoppedBy(x,y); 
+     });
+
+     var coin = new sjs. Image("images/coin.gif")
+      coin.type = "coin";
+      coin.setSize(50,50);
+      coin.moveTo (200,400);
+      coin.setFricton = 0;
+
+           var coin = new sjs. Image("images/coin.gif")
+      coin.type = "coin";
+      coin.setSize(50,50);
+      coin.moveTo (400,400);
+      coin.setFricton = 0;
+
+           var coin = new sjs. Image("images/coin.gif")
+      coin.type = "coin";
+      coin.setSize(50,50);
+      coin.moveTo (600,400);
+      coin.setFricton = 0;
+
+           var coin = new sjs. Image("images/coin.gif")
+      coin.type = "coin";
+      coin.setSize(50,50);
+      coin.moveTo (800,400);
+      coin.setFricton = 0;
+
+     var score = 0;
+     var score_txt = new sjs.Text("Score: 0", 21, "red");
+     score_txt.right().offset(-20, 0);
+     score_txt.fixed = true;
+
+                    
+     sjs.onHit("player","coin", function(x,y){
+     score = score + 1;
+     score_txt.setText("Score :"+ score);
+     localStorage.setItem("score", score);
+     y.destroy();
+     }); 
+
+       var canShoot = true;
+     sjs.keyDown(SPACE_KEY, function(){
+        if(canShoot == true){
+        }
+        if(r_facing == true){
+        player.setImage("images/r shoot.gif");
+        if(r_facing == false){
+        player.setImage("images/l shoot.gif");        	
+        }
+ 
+        }
+     });
+
+   setInterval(function(){
+     if(Math.random() > .5){
+     var enemy = new sjs.Image("images/l enemy.gif")
+     enemy.type = "enemy";
+     enemy.setSize(50,50);
+     enemy.moveTo(2600,440)
+ }
+     setInterval(function(){
+     enemy.pushLeft (3);
+     },500);
+     },1500);
+     
+
+
+
+
+   var statue = new sjs.Image("images/statue.png")
+   statue.type = "statue";
+   statue.setSize(200,200);
+   statue.moveTo(2500,450);
+
+   sjs.onHit("player","statue",function(x,y){
+   	y.destroy();
+   	window.location = "Win Screen.html"
+   });
+     
+     sjs.onHit("player","enemy",function(x,y){
+        	x.destroy();
+        	window.location = "You Lose.html"
+        });
+     
+
+   
+} //end start
+</script>
+</head>
+<body onload="start()">
+<h1> </h1>
+<center>
+</center>
+<div id="target" style="margin:auto;background:grey;"></div>
+<br/>
+<div id="output" style="margin:0 50 0 50;"></div>
+<br/><br/>
+
+</body>
+</html>
